@@ -60,6 +60,11 @@ abstract class Facet implements Stringable
         return ! $this->isEmpty();
     }
 
+    public function label(): string
+    {
+        return $this->label;
+    }
+
     public function type(): string
     {
         return strtolower(substr(static::class, strrpos(static::class, '\\') + 1));
@@ -67,12 +72,12 @@ abstract class Facet implements Stringable
 
     public function snippet(): string
     {
-        return $this->type();
+        return Str::slug($this->type());
     }
 
-    public function label(): string
+    public function safeName(): string
     {
-        return $this->label;
+        return Str::slug($this->name());
     }
 
     /** @return array<int, Link> */
@@ -109,11 +114,9 @@ abstract class Facet implements Stringable
 
     public function render(array $data = []): string
     {
-        $snippet = Str::slug($this->snippet());
-
         return snippet([
-            "facets/{$snippet}--" . Str::slug($this->name()),
-            "facets/{$snippet}",
+            "facets/{$this->snippet()}--{$this->safeName()}",
+            "facets/{$this->snippet()}",
         ], [
             'facet' => $this,
             ...$data,
