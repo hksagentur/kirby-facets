@@ -1,0 +1,40 @@
+{
+  "name": "hksagentur/kirby-facets",
+  "description": "Composable query filters and faceted-search UI for Kirby collections",
+  "type": "kirby-plugin",
+  "license": "ISC",
+  "authors": [
+    {
+      "name": "Daniel Weidner",
+      "email": "d.weidner@hks-agentur.de",
+      "homepage": "https://hks-agentur.de"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Hks\\Facets\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=8.2.0",
+    "getkirby/composer-installer": "^1.2"
+  },
+  "require-dev": {
+    "getkirby/cms": "^5.5",
+    "laravel/pint": "^1.30"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "allow-plugins": {
+      "getkirby/composer-installer": true
+    }
+  },
+  "scripts": {
+    "format": "pint --verbose",
+    "lint": "pint --verbose --test"
+  },
+  "extra": {
+    "installer-name": "facets",
+    "kirby-cms-path": false
+  }
+}
