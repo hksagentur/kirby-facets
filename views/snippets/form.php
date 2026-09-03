@@ -1,7 +1,7 @@
 <?php /** @var \Hks\Facets\Form\Facets $facets */ ?>
 
 <form <?= attr(A::merge([
-    'id' => 'facets',
+    'id' => 'filters',
     'class' => 'facets',
     'method' => 'get'
 ], $attr ?? [])) ?>>
@@ -9,18 +9,25 @@
         <?= $facet ?>
     <?php endforeach ?>
 
+    <button <?= attr([
+        'class' => 'button',
+        'type' => 'submit',
+    ]) ?>>
+        <?= t('hksagentur.facets.form.apply') ?>
+    </button>
+
     <?php if ($facets->advanced()->isNotEmpty()): ?>
         <button <?= attr([
             'class' => 'button',
             'type' => 'button',
             'command' => 'show-modal',
-            'commandfor' => 'facets-dialog',
+            'commandfor' => 'filter-dialog',
         ]) ?>>
-            <?= t('hksagentur.facets.form.advanced') ?>
+            <?= t('hksagentur.facets.form.more') ?>
         </button>
 
         <dialog <?= attr([
-            'id' => 'facets-dialog',
+            'id' => 'filter-dialog',
             'class' => 'dialog',
             'aria-labelledby' => 'facets-dialog-title',
         ]) ?>>
@@ -31,7 +38,7 @@
                     'id' => 'facets-dialog-title',
                     'class' => 'dialog__title',
                 ]) ?>>
-                    <?= t('hksagentur.facets.form.advanced') ?>
+                    <?= t('hksagentur.facets.dialog.title') ?>
                 </h2>
 
                 <button <?= attr([
@@ -41,26 +48,31 @@
                     ],
                     'type' => 'button',
                     'command' => 'close',
-                    'commandfor' => 'facets-dialog',
+                    'commandfor' => 'filter-dialog',
                 ]) ?>>
-                    <?= t('hksagentur.facets.form.close') ?>
+                    <?= t('hksagentur.facets.dialog.close') ?>
                 </button>
             </div>
 
-            <?php foreach ($facets as $facet): ?>
+            <?php foreach ($facets->advanced() as $facet): ?>
                 <?= $facet ?>
             <?php endforeach ?>
         </dialog>
     <?php endif ?>
-
-    <?php if ($facets->links()->isNotEmpty()): ?>
-        <?= $facets->links() ?>
-    <?php endif ?>
-
-    <button <?= attr([
-        'class' => 'button',
-        'type' => 'submit',
-    ]) ?>>
-        <?= t('hksagentur.facets.form.apply') ?>
-    </button>
 </form>
+
+<?php if ($facets->links()->isNotEmpty()): ?>
+    <section <?= attr([
+        'id' => 'active-filters',
+        'aria-labelledby' => 'active-filters-title',
+    ]) ?>>
+        <h2 <?= attr([
+            'id' => 'active-filters-title',
+            'class' => 'visually-hidden',
+        ]) ?>>
+            <?= t('hksagentur.facets.links.title') ?>
+        </h2>
+
+        <?= $facets->links() ?>
+    </section>
+<?php endif ?>

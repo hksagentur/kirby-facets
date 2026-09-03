@@ -1,6 +1,8 @@
 <?php /** @var \Hks\Facets\Form\Links $links */ ?>
 
-<ul <?= attr($attr ?? []) ?>>
+<ul <?= attr($attr ?? [
+    'role' => 'list',
+]) ?>>
     <?php foreach ($links as $link): ?>
         <li>
             <a <?= attr([

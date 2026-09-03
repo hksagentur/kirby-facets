@@ -13,29 +13,31 @@
 
     <ol <?= attr([
         'class' => 'radio-group__list',
+        'role' => 'list',
     ]) ?>>
         <?php foreach ($facet->options() as $option): ?>
-            <label <?= attr([
-                'class' => [
-                    'radio-group__item',
-                    'radio',
-                ],
+            <li <?= attr([
+                'class' => 'radio-group__item',
             ]) ?>>
-                <input <?= attr([
-                    'class' => 'radio__input',
-                    'type' => 'radio',
-                    'name' => $facet->name(),
-                    'value' => $option->value(),
-                    'checked' => $option->isChecked(),
-                    'required' => $facet->isRequired(),
+                <label <?= attr([
+                    'class' => 'radio',
                 ]) ?>>
+                    <input <?= attr([
+                        'class' => 'radio__input',
+                        'type' => 'radio',
+                        'name' => $facet->name(),
+                        'value' => $option->value(),
+                        'checked' => $option->isChecked(),
+                        'required' => $facet->isRequired(),
+                    ]) ?>>
 
-                <span <?= attr([
-                    'class' => 'radio__label',
-                ]) ?>>
-                    <?= esc($option->label()) ?>
-                </span>
-            </label>
+                    <span <?= attr([
+                        'class' => 'radio__label',
+                    ]) ?>>
+                        <?= esc($option->label()) ?>
+                    </span>
+                </label>
+            </li>
         <?php endforeach ?>
     </ol>
 </fieldset>

@@ -12,28 +12,30 @@
 
     <ol <?= attr([
         'class' => 'checkbox-group__list',
+        'role' => 'list',
     ]) ?>>
         <?php foreach ($facet->options() as $option): ?>
-            <label <?= attr([
-                'class' => [
-                    'checkbox-group__item',
-                    'checkbox',
-                ],
+            <li <?= attr([
+                'class' => 'checkbox-group__item',
             ]) ?>>
-                <input <?= attr([
-                    'class' => 'checkbox__input',
-                    'type' => 'checkbox',
-                    'name' => $facet->name(),
-                    'value' => $option->value(),
-                    'checked' => $option->isChecked(),
+                <label <?= attr([
+                    'class' => 'checkbox',
                 ]) ?>>
+                    <input <?= attr([
+                        'class' => 'checkbox__input',
+                        'type' => 'checkbox',
+                        'name' => $facet->name(),
+                        'value' => $option->value(),
+                        'checked' => $option->isChecked(),
+                    ]) ?>>
 
-                <span <?= attr([
-                    'class' => 'checkbox__label',
-                ]) ?>>
-                    <?= esc($option->label()) ?>
-                </span>
-            </label>
+                    <span <?= attr([
+                        'class' => 'checkbox__label',
+                    ]) ?>>
+                        <?= esc($option->label()) ?>
+                    </span>
+                </label>
+            </li>
         <?php endforeach ?>
     </ol>
 </fieldset>
