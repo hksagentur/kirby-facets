@@ -9,6 +9,8 @@
         'name' => $facet->name(),
         'checked' => $facet->isChecked(),
         'value' => '1',
+        'disabled' => $facet->isDisabled(),
+        'required' => $facet->isRequired(),
     ]) ?>>
 
     <span <?= attr([

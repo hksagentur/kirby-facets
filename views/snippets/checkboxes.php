@@ -2,6 +2,7 @@
 
 <fieldset <?= attr(A::merge([
     'class' => 'checkbox-group',
+    'disabled' => $facet->isDisabled(),
 ], $attr ?? [])) ?>>
     <legend <?= attr([
         'class' => 'checkbox-group__label',

@@ -3,6 +3,7 @@
 <fieldset <?= attr(A::merge([
     'class' => 'radio-group',
     'role' => 'radiogroup',
+    'disabled' => $facet->isDisabled(),
 ], $attr ?? [])) ?>>
     <legend <?= attr([
         'class' => 'radio-group__label',
@@ -26,6 +27,7 @@
                     'name' => $facet->name(),
                     'value' => $option->value(),
                     'checked' => $option->isChecked(),
+                    'required' => $facet->isRequired(),
                 ]) ?>>
 
                 <span <?= attr([
