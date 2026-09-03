@@ -1,4 +1,4 @@
-<?php /** @var \Hks\Facets\Form\Facet\Checkboxes $facet */ ?>
+<?php /** @var \Hks\Facets\Form\Facets\Checkboxes $facet */ ?>
 
 <fieldset <?= attr(A::merge([
     'class' => 'checkbox-group',

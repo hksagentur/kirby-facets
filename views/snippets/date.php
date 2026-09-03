@@ -1,4 +1,4 @@
-<?php /** @var \Hks\Facets\Form\Facet\Date $facet */ ?>
+<?php /** @var \Hks\Facets\Form\Facets\Date $facet */ ?>
 
 <label <?= attr(A::merge([
     'class' => 'field',

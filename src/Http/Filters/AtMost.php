@@ -1,6 +1,6 @@
 <?php
 
-namespace Hks\Facets\Http\Filter;
+namespace Hks\Facets\Http\Filters;
 
 use Kirby\Cms\Collection;
 

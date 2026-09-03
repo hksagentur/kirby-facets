@@ -1,6 +1,6 @@
 <?php
 
-namespace Hks\Facets\Http\Filter;
+namespace Hks\Facets\Http\Filters;
 
 use Closure;
 use Hks\Facets\Http\Filter;

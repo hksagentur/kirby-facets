@@ -3,17 +3,17 @@
 namespace Hks\Facets\Http;
 
 use Closure;
-use Hks\Facets\Http\Filter\After;
-use Hks\Facets\Http\Filter\AtLeast;
-use Hks\Facets\Http\Filter\AtMost;
-use Hks\Facets\Http\Filter\BelongsTo;
-use Hks\Facets\Http\Filter\Before;
-use Hks\Facets\Http\Filter\Callback;
-use Hks\Facets\Http\Filter\Equals;
-use Hks\Facets\Http\Filter\HasAny;
-use Hks\Facets\Http\Filter\In;
-use Hks\Facets\Http\Filter\Not;
-use Hks\Facets\Http\Filter\Search;
+use Hks\Facets\Http\Filters\After;
+use Hks\Facets\Http\Filters\AtLeast;
+use Hks\Facets\Http\Filters\AtMost;
+use Hks\Facets\Http\Filters\BelongsTo;
+use Hks\Facets\Http\Filters\Before;
+use Hks\Facets\Http\Filters\Callback;
+use Hks\Facets\Http\Filters\Equals;
+use Hks\Facets\Http\Filters\HasAny;
+use Hks\Facets\Http\Filters\In;
+use Hks\Facets\Http\Filters\Not;
+use Hks\Facets\Http\Filters\Search;
 use Kirby\Cms\Collection;
 
 abstract class Filter

@@ -1,6 +1,6 @@
 <?php
 
-namespace Hks\Facets\Form\Facet;
+namespace Hks\Facets\Form\Facets;
 
 use Hks\Facets\Form\Facet;
 

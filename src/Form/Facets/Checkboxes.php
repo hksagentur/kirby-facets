@@ -1,13 +1,13 @@
 <?php
 
-namespace Hks\Facets\Form\Facet;
+namespace Hks\Facets\Form\Facets;
 
 use Closure;
+use Hks\Facets\Form\Concerns\HasOptions;
 use Hks\Facets\Form\Facet;
-use Hks\Facets\Form\HasOptions;
 use Hks\Facets\Form\Options;
 
-class Radio extends Facet
+class Checkboxes extends Facet
 {
     use HasOptions;
 

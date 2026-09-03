@@ -3,10 +3,10 @@
 namespace Hks\Facets\Form;
 
 use Closure;
-use Hks\Facets\Form\Facet\Checkboxes;
-use Hks\Facets\Form\Facet\Date;
-use Hks\Facets\Form\Facet\Radio;
-use Hks\Facets\Form\Facet\Toggle;
+use Hks\Facets\Form\Facets\Checkboxes;
+use Hks\Facets\Form\Facets\Date;
+use Hks\Facets\Form\Facets\Radio;
+use Hks\Facets\Form\Facets\Toggle;
 use Hks\Facets\Http\InteractsWithInput;
 use Kirby\Toolkit\A;
 use Kirby\Toolkit\Str;

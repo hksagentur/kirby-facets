@@ -1,4 +1,4 @@
-<?php /** @var \Hks\Facets\Form\Facet\Radio $facet */ ?>
+<?php /** @var \Hks\Facets\Form\Facets\Radio $facet */ ?>
 
 <fieldset <?= attr(A::merge([
     'class' => 'radio-group',

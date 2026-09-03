@@ -1,8 +1,10 @@
 <?php
 
-namespace Hks\Facets\Form;
+namespace Hks\Facets\Form\Concerns;
 
 use Closure;
+use Hks\Facets\Form\Option;
+use Hks\Facets\Form\Options;
 
 trait HasOptions
 {

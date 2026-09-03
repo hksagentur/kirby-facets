@@ -1,4 +1,4 @@
-<?php /** @var \Hks\Facets\Form\Facet\Toggle $facet */ ?>
+<?php /** @var \Hks\Facets\Form\Facets\Toggle $facet */ ?>
 
 <label <?= attr(A::merge([
     'class' => 'toggle',
