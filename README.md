@@ -142,7 +142,7 @@ Filter::in('season')->from('spielzeit');
 
 ### Rendering with `Facet`/`Facets`
 
-A `Facet` reads its own value from the request by query parameter name, independently of any `Filter` — if a facet should narrow the same collection a `Filter` filters, give both the same name. `Facet` type names match Kirby Panel's own field type names (`checkboxes`, `radio`, `date`, `toggle`) — `toggle` pairs naturally with `Filter::equals()` for a plain boolean field, no dedicated `Toggle` filter needed:
+A `Facet` reads its own value from the request by query parameter name, independently of any `Filter` — if a facet should narrow the same collection a `Filter` filters, give both the same name. `Facet` type names match Kirby Panel's own field type names (`checkboxes`, `radio`, `select`, `date`, `toggle`) — `toggle` pairs naturally with `Filter::equals()` for a plain boolean field, no dedicated `Toggle` filter needed:
 
 ```php
 <?php
@@ -242,11 +242,12 @@ A filter that needs extra constructor arguments (like `BelongsTo`'s `$relation`,
 
 ### Overriding the default markup
 
-`Facet::render()` resolves `facets/checkboxes`, `facets/radio`, `facets/date`, or `facets/toggle`; `Facets::render()`/`Links::render()` resolve `facets/form`/`facets/links` the same way. Kirby resolves a snippet against `site/snippets/` before falling back to a plugin-registered snippet of the same name, so replacing the plugin's markup with your own design system needs no plugin option — just add the same-named file to your own project:
+`Facet::render()` resolves `facets/checkboxes`, `facets/radio`, `facets/select`, `facets/date`, or `facets/toggle`; `Facets::render()`/`Links::render()` resolve `facets/form`/`facets/links` the same way. Kirby resolves a snippet against `site/snippets/` before falling back to a plugin-registered snippet of the same name, so replacing the plugin's markup with your own design system needs no plugin option — just add the same-named file to your own project:
 
 ```
 site/snippets/facets/checkboxes.php
 site/snippets/facets/radio.php
+site/snippets/facets/select.php
 site/snippets/facets/date.php
 site/snippets/facets/toggle.php
 site/snippets/facets/form.php

@@ -6,6 +6,7 @@ use Closure;
 use Hks\Facets\Form\Facets\Checkboxes;
 use Hks\Facets\Form\Facets\Date;
 use Hks\Facets\Form\Facets\Radio;
+use Hks\Facets\Form\Facets\Select;
 use Hks\Facets\Form\Facets\Toggle;
 use Hks\Facets\Http\InteractsWithInput;
 use Kirby\Toolkit\A;
@@ -38,6 +39,11 @@ abstract class Facet implements Stringable
     public static function radio(string $name, string $label, array|Closure $options, bool $featured = false): Radio
     {
         return new Radio($name, $label, $options, $featured);
+    }
+
+    public static function select(string $name, string $label, array|Closure $options, bool $featured = false): Select
+    {
+        return new Select($name, $label, $options, $featured);
     }
 
     public static function toggle(string $name, string $label, bool $featured = false): Toggle
