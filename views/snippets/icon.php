@@ -6,7 +6,7 @@
 <?php endif ?>
 
 <span <?= attr(A::merge([
-    'class' => 'icon',
-    'data-icon' => $name,
-    'aria-hidden' => 'true',
-], $attr ?? [])) ?>></span>
+        'class' => 'icon',
+        'data-icon' => $name,
+        'aria-hidden' => 'true',
+    ], $attr ?? [])) ?>></span>
