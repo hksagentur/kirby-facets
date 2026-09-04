@@ -12,7 +12,7 @@ use Kirby\Toolkit\Collection;
  */
 class Options extends Collection
 {
-    /** @param array<int, array{value: string, label: string}> $options */
+    /** @param array<int, array{value: string, label: string, icon?: string|null}> $options */
     public static function factory(array $options, mixed $checked = null): static
     {
         $checked = A::wrap($checked);
@@ -21,6 +21,7 @@ class Options extends Collection
             fn (array $option) => new Option(
                 $option['label'],
                 $option['value'],
+                $option['icon'] ?? null,
                 in_array($option['value'], $checked, true),
             ),
             $options

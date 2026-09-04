@@ -29,8 +29,21 @@
                         'checked' => $option->isChecked(),
                     ]) ?>>
 
+                    <?php if ($option->hasIcon()): ?>
+                        <?= snippet([
+                            'facets/icon--checkbox',
+                            'facets/icon',
+                        ], [
+                            'name' => $option->icon(),
+                            'class' => 'checkbox__icon',
+                        ]) ?>
+                    <?php endif ?>
+
                     <span <?= attr([
-                        'class' => 'checkbox__label',
+                        'class' => [
+                            'checkbox__label',
+                            ...$facet->shouldHideLabels() ? ['visually-hidden'] : [],
+                        ],
                     ]) ?>>
                         <?= esc($option->label()) ?>
                     </span>

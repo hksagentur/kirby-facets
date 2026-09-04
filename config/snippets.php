@@ -1,11 +1,13 @@
 <?php
 
 return [
-    'facets/checkboxes' => __DIR__ . '/../views/snippets/checkboxes.php',
-    'facets/radio' => __DIR__ . '/../views/snippets/radio.php',
-    'facets/select' => __DIR__ . '/../views/snippets/select.php',
-    'facets/date' => __DIR__ . '/../views/snippets/date.php',
-    'facets/toggle' => __DIR__ . '/../views/snippets/toggle.php',
-    'facets/form' => __DIR__ . '/../views/snippets/form.php',
-    'facets/links' => __DIR__ . '/../views/snippets/links.php',
+    'facets/checkboxes' => dirname(__DIR__) . '/views/snippets/checkboxes.php',
+    'facets/icon' => dirname(__DIR__) . '/views/snippets/icon.php',
+    'facets/radio' => dirname(__DIR__) . '/views/snippets/radio.php',
+    'facets/select' => dirname(__DIR__) . '/views/snippets/select.php',
+    'facets/date' => dirname(__DIR__) . '/views/snippets/date.php',
+    'facets/toggle' => dirname(__DIR__) . '/views/snippets/toggle.php',
+    'facets/form' => dirname(__DIR__) . '/views/snippets/form.php',
+    'facets/links' => dirname(__DIR__) . '/views/snippets/links.php',
+    'facets/link' => dirname(__DIR__) . '/views/snippets/link.php',
 ];

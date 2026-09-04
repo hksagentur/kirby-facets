@@ -15,7 +15,7 @@ class Links extends Collection implements Stringable
     public function render(array $data = []): string
     {
         return snippet('facets/links', [
-            'links' => $this,
+            'items' => $this,
             ...$data,
         ], return: true);
     }

@@ -3,6 +3,7 @@
 namespace Hks\Facets\Form;
 
 use Closure;
+use Hks\Facets\Form\Concerns\CanBeFeatured;
 use Hks\Facets\Form\Facets\Checkboxes;
 use Hks\Facets\Form\Facets\Date;
 use Hks\Facets\Form\Facets\Radio;
@@ -15,6 +16,7 @@ use Stringable;
 
 abstract class Facet implements Stringable
 {
+    use CanBeFeatured;
     use InteractsWithInput;
 
     protected ?Closure $format = null;
@@ -22,48 +24,42 @@ abstract class Facet implements Stringable
     public function __construct(
         protected string $name,
         protected string $label,
-        protected bool $featured = false,
     ) {
     }
 
-    public static function checkboxes(string $name, string $label, array|Closure $options, bool $featured = false): Checkboxes
+    public static function checkboxes(string $name, string $label, array|Closure $options): Checkboxes
     {
-        return new Checkboxes($name, $label, $options, $featured);
+        return new Checkboxes($name, $label, $options);
     }
 
-    public static function date(string $name, string $label, bool $featured = false): Date
+    public static function date(string $name, string $label): Date
     {
-        return new Date($name, $label, $featured);
+        return new Date($name, $label);
     }
 
-    public static function radio(string $name, string $label, array|Closure $options, bool $featured = false): Radio
+    public static function radio(string $name, string $label, array|Closure $options): Radio
     {
-        return new Radio($name, $label, $options, $featured);
+        return new Radio($name, $label, $options);
     }
 
-    public static function select(string $name, string $label, array|Closure $options, bool $featured = false): Select
+    public static function select(string $name, string $label, array|Closure $options): Select
     {
-        return new Select($name, $label, $options, $featured);
+        return new Select($name, $label, $options);
     }
 
-    public static function toggle(string $name, string $label, bool $featured = false): Toggle
+    public static function toggle(string $name, string $label): Toggle
     {
-        return new Toggle($name, $label, $featured);
-    }
-
-    public function isFeatured(): bool
-    {
-        return $this->featured;
-    }
-
-    public function isAdvanced(): bool
-    {
-        return ! $this->isFeatured();
+        return new Toggle($name, $label);
     }
 
     public function isActive(): bool
     {
         return ! $this->isEmpty();
+    }
+
+    public function isAdvanced(): bool
+    {
+        return ! $this->isFeatured();
     }
 
     public function label(): string

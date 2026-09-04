@@ -31,8 +31,21 @@
                         'required' => $facet->isRequired(),
                     ]) ?>>
 
+                    <?php if ($option->hasIcon()): ?>
+                        <?= snippet([
+                            'facets/icon--radio',
+                            'facets/icon',
+                        ], [
+                            'name' => $option->icon(),
+                            'class' => 'radio__icon',
+                        ]) ?>
+                    <?php endif ?>
+
                     <span <?= attr([
-                        'class' => 'radio__label',
+                        'class' => [
+                            'radio__label',
+                            ...$facet->shouldHideLabels() ? ['visually-hidden'] : [],
+                        ],
                     ]) ?>>
                         <?= esc($option->label()) ?>
                     </span>

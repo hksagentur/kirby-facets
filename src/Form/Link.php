@@ -3,7 +3,6 @@
 namespace Hks\Facets\Form;
 
 use Kirby\Http\Uri;
-use Kirby\Toolkit\Html;
 use Stringable;
 
 class Link implements Stringable
@@ -38,6 +37,40 @@ class Link implements Stringable
         ]);
     }
 
+    public function render(array $data = []): string
+    {
+        return snippet('facets/link', [
+            'item' => $this,
+            ...$data,
+        ], return: true);
+    }
+
+    public function toString(): string
+    {
+        return $this->render();
+    }
+
+    public function toHtml(array $attributes = []): string
+    {
+        return $this->render([
+            'attr' => $attributes,
+        ]);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'label' => $this->label,
+            'value' => $this->value,
+        ];
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
+    }
+
     protected function withoutValue(array $query): array
     {
         if (is_array($query[$this->name] ?? null) === false) {
@@ -53,29 +86,5 @@ class Link implements Stringable
         }
 
         return $query;
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'name' => $this->name,
-            'label' => $this->label,
-            'value' => $this->value,
-        ];
-    }
-
-    public function toString(): string
-    {
-        return $this->url();
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return Html::link($this->url(), $this->label(), $attributes);
-    }
-
-    public function __toString(): string
-    {
-        return $this->toString();
     }
 }

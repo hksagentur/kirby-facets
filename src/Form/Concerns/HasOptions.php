@@ -8,7 +8,7 @@ use Hks\Facets\Form\Options;
 
 trait HasOptions
 {
-    protected Options|Closure|array|null $options;
+    protected Options|Closure|array $options;
 
     public function hasOptions(): bool
     {

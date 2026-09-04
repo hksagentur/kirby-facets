@@ -4,6 +4,7 @@ namespace Hks\Facets\Form\Facets;
 
 use Closure;
 use Hks\Facets\Form\Concerns\CanBeDisabled;
+use Hks\Facets\Form\Concerns\CanHideOptionLabels;
 use Hks\Facets\Form\Concerns\HasOptions;
 use Hks\Facets\Form\Facet;
 use Hks\Facets\Form\Options;
@@ -11,13 +12,13 @@ use Hks\Facets\Form\Options;
 class Checkboxes extends Facet
 {
     use CanBeDisabled;
+    use CanHideOptionLabels;
     use HasOptions;
 
     public function __construct(
         protected string $name,
         protected string $label,
-        protected Options|Closure|array|null $options = null,
-        protected bool $featured = false,
+        protected Options|Closure|array $options,
     ) {
     }
 }

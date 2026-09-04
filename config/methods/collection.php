@@ -14,7 +14,11 @@ return [
         return $collection;
     },
 
-    'toFacetOptions' => function (Closure|string|null $value = null, ?string $label = null): Options {
+    'toFacetOptions' => function (
+        Closure|string|null $value = null,
+        ?string $label = null,
+        ?string $icon = null,
+    ): Options {
         $get = fn (mixed $item, string|Closure $key) => ($key instanceof Closure)
             ? $key($item)
             : $this->getAttribute($item, $key);
@@ -22,6 +26,7 @@ return [
         return Options::factory($this->values(fn (mixed $item) => [
             'value' => $get($item, $value ?? 'id'),
             'label' => $get($item, $label ?? 'title'),
+            'icon' => $icon !== null ? $get($item, $icon) : null,
         ]));
     },
 ];

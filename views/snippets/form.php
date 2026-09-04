@@ -2,55 +2,76 @@
 
 <form <?= attr(A::merge([
     'id' => 'filters',
-    'class' => 'facets',
-    'method' => 'get'
+    'class' => [
+        'filters',
+        'form',
+    ],
+    'method' => 'get',
+    'aria-labelledby' => 'filters-title',
 ], $attr ?? [])) ?>>
+    <h2 <?= attr([
+        'id' => 'filters-title',
+        'class' => [
+            'form__title',
+            'visually-hidden',
+        ],
+    ]) ?>>
+        <?= t('hksagentur.facets.form.title') ?>
+    </h2>
+
     <?php foreach ($facets->featured() as $facet): ?>
         <?= $facet ?>
     <?php endforeach ?>
 
-    <button <?= attr([
-        'class' => 'button',
-        'type' => 'submit',
+    <div <?= attr([
+        'class' => 'form__actions',
     ]) ?>>
-        <?= t('hksagentur.facets.form.apply') ?>
-    </button>
-
-    <?php if ($facets->advanced()->isNotEmpty()): ?>
         <button <?= attr([
             'class' => 'button',
-            'type' => 'button',
-            'command' => 'show-modal',
-            'commandfor' => 'filter-dialog',
+            'type' => 'submit',
         ]) ?>>
-            <?= t('hksagentur.facets.form.more') ?>
+            <?= t('hksagentur.facets.form.apply') ?>
         </button>
 
+        <?php if ($facets->advanced()->isNotEmpty()): ?>
+            <button <?= attr([
+                'class' => 'button',
+                'type' => 'button',
+                'command' => 'show-modal',
+                'commandfor' => 'filter-dialog',
+            ]) ?>>
+                <?= t('hksagentur.facets.form.more') ?>
+            </button>
+        <?php endif ?>
+    </div>
+
+    <?php if ($facets->advanced()->isNotEmpty()): ?>
         <dialog <?= attr([
             'id' => 'filter-dialog',
-            'class' => 'dialog',
-            'aria-labelledby' => 'facets-dialog-title',
+            'class' => 'drawer',
+            'aria-labelledby' => 'filter-dialog-title',
         ]) ?>>
             <div <?= attr([
-                'class' => 'dialog__header',
+                'class' => 'drawer__header',
             ]) ?>>
                 <h2 <?= attr([
-                    'id' => 'facets-dialog-title',
-                    'class' => 'dialog__title',
+                    'id' => 'filter-dialog-title',
+                    'class' => 'drawer__title',
                 ]) ?>>
                     <?= t('hksagentur.facets.dialog.title') ?>
                 </h2>
 
                 <button <?= attr([
                     'class' => [
-                        'dialog__close',
+                        'drawer__close',
                         'button',
                     ],
                     'type' => 'button',
                     'command' => 'close',
                     'commandfor' => 'filter-dialog',
+                    'aria-label' => t('hksagentur.facets.dialog.close'),
                 ]) ?>>
-                    <?= t('hksagentur.facets.dialog.close') ?>
+                    <?php snippet('facets/icon', ['name' => 'cross']) ?>
                 </button>
             </div>
 

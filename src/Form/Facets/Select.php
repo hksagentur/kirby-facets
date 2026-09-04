@@ -20,8 +20,7 @@ class Select extends Facet
     public function __construct(
         protected string $name,
         protected string $label,
-        protected Options|Closure|array|null $options = null,
-        protected bool $featured = false,
+        protected Options|Closure|array $options,
     ) {
     }
 }
