@@ -6,10 +6,10 @@
 <?php endif ?>
 
 <span <?= attr(A::merge([
-            'class' => [
-                'icon',
-                ...A::wrap($class ?? []),
-            ],
-            'data-icon' => $name,
-            'aria-hidden' => 'true',
-        ], $attr ?? [])) ?>></span>
+                'class' => [
+                    'icon',
+                    ...A::wrap($class ?? []),
+                ],
+                'data-icon' => $name,
+                'aria-hidden' => 'true',
+            ], $attr ?? [])) ?>></span>
