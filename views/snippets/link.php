@@ -1,7 +1,7 @@
 <?php /** @var \Hks\Facets\Form\Link $item */ ?>
 
 <a <?= attr([
-    'class' => 'badge',
+    'class' => 'chip',
     'href' => $item->url(),
     'aria-label' => tt('hksagentur.facets.filter.remove', [
         'label' => $item->label(),
@@ -11,6 +11,9 @@
 
     <?php snippet('facets/icon', [
         'name' => 'cross',
-        'class' => 'badge__icon',
+        'class' => [
+            'chip__icon',
+            'chip__icon--trailing',
+        ],
     ]) ?>
 </a>
