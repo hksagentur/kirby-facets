@@ -2,6 +2,7 @@
 
 namespace Hks\Facets\Form;
 
+use Hks\Facets\Http\Query;
 use Hks\Facets\Toolkit\Str;
 use Kirby\Http\Uri;
 use Stringable;
@@ -15,7 +16,7 @@ abstract class Link implements Stringable
     ) {
     }
 
-    abstract protected function query(array $parameters): array;
+    abstract protected function query(Query $query): Query;
 
     public function type(): string
     {
@@ -32,7 +33,7 @@ abstract class Link implements Stringable
         $uri = Uri::current();
 
         return $uri->clone([
-            'query' => $this->query($uri->query->toArray()),
+            'query' => $this->query(new Query($uri->query->toArray()))->toArray(),
         ]);
     }
 

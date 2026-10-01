@@ -3,6 +3,7 @@
 namespace Hks\Facets\Form\Links;
 
 use Hks\Facets\Form\Link;
+use Hks\Facets\Http\Query;
 
 class RemoveLink extends Link
 {
@@ -35,20 +36,8 @@ class RemoveLink extends Link
         ];
     }
 
-    protected function query(array $parameters): array
+    protected function query(Query $query): Query
     {
-        if (is_array($parameters[$this->name] ?? null) === false) {
-            unset($parameters[$this->name]);
-
-            return $parameters;
-        }
-
-        $parameters[$this->name] = array_values(array_diff($parameters[$this->name], [$this->value]));
-
-        if ($parameters[$this->name] === []) {
-            unset($parameters[$this->name]);
-        }
-
-        return $parameters;
+        return $query->withoutValue($this->name, $this->value);
     }
 }

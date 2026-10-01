@@ -3,6 +3,7 @@
 namespace Hks\Facets\Form\Links;
 
 use Hks\Facets\Form\Link;
+use Hks\Facets\Http\Query;
 
 class ResetLink extends Link
 {
@@ -24,8 +25,8 @@ class ResetLink extends Link
         ];
     }
 
-    protected function query(array $parameters): array
+    protected function query(Query $query): Query
     {
-        return array_diff_key($parameters, array_flip($this->names));
+        return $query->without(...$this->names);
     }
 }

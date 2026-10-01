@@ -3,6 +3,7 @@
 namespace Hks\Facets\Form\Links;
 
 use Hks\Facets\Form\Link;
+use Hks\Facets\Http\Query;
 
 class ClearLink extends Link
 {
@@ -23,10 +24,8 @@ class ClearLink extends Link
         ];
     }
 
-    protected function query(array $parameters): array
+    protected function query(Query $query): Query
     {
-        unset($parameters[$this->name]);
-
-        return $parameters;
+        return $query->without($this->name);
     }
 }
