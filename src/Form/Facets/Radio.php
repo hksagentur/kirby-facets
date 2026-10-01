@@ -18,8 +18,8 @@ class Radio extends Facet
     use HasOptions;
 
     public function __construct(
-        protected string $name,
         protected string $label,
+        protected string $name,
         protected Options|Closure|array $options,
     ) {
     }

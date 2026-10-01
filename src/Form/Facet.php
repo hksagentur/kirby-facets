@@ -22,34 +22,34 @@ abstract class Facet implements Stringable
     protected ?Closure $format = null;
 
     public function __construct(
-        protected string $name,
         protected string $label,
+        protected string $name,
     ) {
     }
 
-    public static function checkboxes(string $name, string $label, array|Closure $options): Checkboxes
+    public static function checkboxes(string $label, string $name, array|Closure $options): Checkboxes
     {
-        return new Checkboxes($name, $label, $options);
+        return new Checkboxes($label, $name, $options);
     }
 
-    public static function date(string $name, string $label): Date
+    public static function date(string $label, string $name): Date
     {
-        return new Date($name, $label);
+        return new Date($label, $name);
     }
 
-    public static function radio(string $name, string $label, array|Closure $options): Radio
+    public static function radio(string $label, string $name, array|Closure $options): Radio
     {
-        return new Radio($name, $label, $options);
+        return new Radio($label, $name, $options);
     }
 
-    public static function select(string $name, string $label, array|Closure $options): Select
+    public static function select(string $label, string $name, array|Closure $options): Select
     {
-        return new Select($name, $label, $options);
+        return new Select($label, $name, $options);
     }
 
-    public static function toggle(string $name, string $label): Toggle
+    public static function toggle(string $label, string $name): Toggle
     {
-        return new Toggle($name, $label);
+        return new Toggle($label, $name);
     }
 
     public function isActive(): bool
