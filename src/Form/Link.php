@@ -30,10 +30,8 @@ abstract class Link implements Stringable
 
     public function url(): Uri
     {
-        $uri = Uri::current();
-
-        return $uri->clone([
-            'query' => $this->query(new Query($uri->query->toArray()))->toArray(),
+        return Uri::current()->clone([
+            'query' => $this->query(Query::current())->toArray(),
         ]);
     }
 
