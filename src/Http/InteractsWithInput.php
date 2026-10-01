@@ -10,8 +10,6 @@ use Kirby\Uuid\Uuid;
 
 trait InteractsWithInput
 {
-    protected string $name;
-
     public function isEmpty(): bool
     {
         $value = $this->value();
@@ -23,10 +21,12 @@ trait InteractsWithInput
         return true;
     }
 
-    public function name(): string
+    public function isNotEmpty(): bool
     {
-        return $this->name;
+        return ! $this->isEmpty();
     }
+
+    abstract public function name(): string;
 
     public function value(mixed $default = null): mixed
     {

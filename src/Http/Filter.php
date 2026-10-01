@@ -25,6 +25,11 @@ abstract class Filter
     ) {
     }
 
+    public function name(): string
+    {
+        return $this->name;
+    }
+
     public function from(string $name): static
     {
         $this->name = $name;

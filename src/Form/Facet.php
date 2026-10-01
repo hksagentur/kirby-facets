@@ -54,7 +54,7 @@ abstract class Facet implements Stringable
 
     public function isActive(): bool
     {
-        return ! $this->isEmpty();
+        return $this->isNotEmpty();
     }
 
     public function isAdvanced(): bool
@@ -65,6 +65,11 @@ abstract class Facet implements Stringable
     public function label(): string
     {
         return $this->label;
+    }
+
+    public function name(): string
+    {
+        return $this->name;
     }
 
     public function type(): string
