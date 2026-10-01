@@ -2,7 +2,7 @@
 
 return [
     'hksagentur.facets.form.title' => 'Filters',
-    'hksagentur.facets.form.apply' => 'Apply filters',
+    'hksagentur.facets.form.apply' => 'Apply',
     'hksagentur.facets.form.more' => 'More filters',
     'hksagentur.facets.dialog.title' => 'Filter & Sort',
     'hksagentur.facets.dialog.close' => 'Close',
