@@ -2,12 +2,20 @@
 
 namespace Hks\Facets\Http;
 
-class Query
+use Kirby\Http\Uri;
+use Stringable;
+
+class Query implements Stringable
 {
     /** @param array<string, mixed> $parameters */
     public function __construct(
         protected readonly array $parameters = [],
     ) {
+    }
+
+    public static function current(): static
+    {
+        return new static(Uri::current()->query()->toArray());
     }
 
     public function without(string ...$names): static
@@ -38,9 +46,34 @@ class Query
         ]);
     }
 
+    public function toString(bool $questionMark = false): string
+    {
+        $query = http_build_query(
+            data: $this->parameters,
+            numeric_prefix: '',
+            arg_separator: '&',
+            encoding_type: PHP_QUERY_RFC3986,
+        );
+
+        if ($query === '') {
+            return '';
+        }
+
+        if ($questionMark === true) {
+            $query = '?' . $query;
+        }
+
+        return $query;
+    }
+
     /** @return array<string, mixed> */
     public function toArray(): array
     {
         return $this->parameters;
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 }
