@@ -12,9 +12,6 @@
 
     <?php snippet('facets/icon', [
         'name' => 'cross',
-        'class' => [
-            'chip__icon',
-            'chip__icon--trailing',
-        ],
+        'class' => 'link__icon',
     ]) ?>
 </a>
