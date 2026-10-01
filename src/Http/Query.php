@@ -12,16 +12,21 @@ class Query
 
     public function without(string ...$names): static
     {
-        return new static(array_diff_key($this->parameters, array_flip($names)));
+        return new static(array_diff_key(
+            $this->parameters,
+            array_flip($names),
+        ));
     }
 
     public function withoutValue(string $name, string $value): static
     {
-        if (is_array($this->parameters[$name] ?? null) === false) {
+        $parameter = $this->parameters[$name] ?? null;
+
+        if (! is_array($parameter)) {
             return $this->without($name);
         }
 
-        $values = array_values(array_diff($this->parameters[$name], [$value]));
+        $values = array_values(array_diff($parameter, [$value]));
 
         if ($values === []) {
             return $this->without($name);
