@@ -2,7 +2,9 @@
 
 namespace Hks\Facets\Form;
 
+use Hks\Facets\Form\Links\ResetLink;
 use Kirby\Toolkit\Collection;
+use Kirby\Toolkit\I18n;
 use Stringable;
 
 /**
@@ -12,6 +14,21 @@ use Stringable;
 class Facets extends Collection implements Stringable
 {
     use Concerns\CanBeRendered;
+
+    public function hasActive(): bool
+    {
+        return $this->active()->isNotEmpty();
+    }
+
+    public function hasFeatured(): bool
+    {
+        return $this->featured()->isNotEmpty();
+    }
+
+    public function hasAdvanced(): bool
+    {
+        return $this->advanced()->isNotEmpty();
+    }
 
     public function featured(): static
     {
@@ -55,6 +72,18 @@ class Facets extends Collection implements Stringable
         }
 
         return new Links($links);
+    }
+
+    public function resetLink(): ?ResetLink
+    {
+        if (! $this->hasActive()) {
+            return null;
+        }
+
+        return new ResetLink(
+            label: I18n::translate('hksagentur.facets.links.reset'),
+            names: $this->keys(),
+        );
     }
 
     public function snippet(): string|array

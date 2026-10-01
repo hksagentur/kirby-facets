@@ -8,9 +8,12 @@ use Hks\Facets\Form\Facets\Date;
 use Hks\Facets\Form\Facets\Radio;
 use Hks\Facets\Form\Facets\Select;
 use Hks\Facets\Form\Facets\Toggle;
+use Hks\Facets\Form\Links\ClearLink;
+use Hks\Facets\Form\Links\RemoveLink;
 use Hks\Facets\Http\InteractsWithInput;
 use Hks\Facets\Toolkit\Str;
 use Kirby\Toolkit\A;
+use Kirby\Toolkit\I18n;
 use Stringable;
 
 abstract class Facet implements Stringable
@@ -95,12 +98,31 @@ abstract class Facet implements Stringable
         ];
     }
 
-    /** @return array<int, Link> */
+    /** @return array<int, RemoveLink> */
     public function links(): array
     {
         return array_map(
-            fn (string $value) => new Link($this->name(), $this->format($value), $value),
+            fn (string $value) => new RemoveLink(
+                label: $this->format($value),
+                name: $this->name(),
+                value: $value,
+            ),
             A::wrap($this->value())
+        );
+    }
+
+    public function clearLink(): ?ClearLink
+    {
+        if ($this->isEmpty()) {
+            return null;
+        }
+
+        $label = $this->label();
+        $name = $this->name();
+
+        return new ClearLink(
+            label: I18n::template('hksagentur.facets.links.clear', replace: ['label' => $label]),
+            name: $name,
         );
     }
 

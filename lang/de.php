@@ -9,4 +9,6 @@ return [
     'hksagentur.facets.filter.remove' => 'Filter „{{ label }}“ entfernen',
     'hksagentur.facets.select.empty' => '- Auswählen -',
     'hksagentur.facets.links.title' => 'Aktive Filter',
+    'hksagentur.facets.links.reset' => 'Zurücksetzen',
+    'hksagentur.facets.links.clear' => '{{ label }} zurücksetzen',
 ];

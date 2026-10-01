@@ -33,6 +33,8 @@
             <?= t('hksagentur.facets.form.apply') ?>
         </button>
 
+        <?= $facets->resetLink() ?>
+
         <?php if ($facets->advanced()->isNotEmpty()): ?>
             <button <?= attr([
                 'class' => 'button',

@@ -2,27 +2,24 @@
 
 namespace Hks\Facets\Form;
 
+use Hks\Facets\Toolkit\Str;
 use Kirby\Http\Uri;
 use Stringable;
 
-class Link implements Stringable
+abstract class Link implements Stringable
 {
     use Concerns\CanBeRendered;
 
     public function __construct(
-        protected readonly string $name,
         protected readonly string $label,
-        protected readonly string $value,
     ) {
     }
 
-    public static function from(array $props): static
+    abstract protected function query(array $parameters): array;
+
+    public function type(): string
     {
-        return new static(
-            $props['name'],
-            $props['label'],
-            $props['value'],
-        );
+        return Str::snake(Str::before(Str::classBasename(static::class), 'Link'));
     }
 
     public function label(): string
@@ -35,13 +32,16 @@ class Link implements Stringable
         $uri = Uri::current();
 
         return $uri->clone([
-            'query' => $this->withoutValue($uri->query->toArray()),
+            'query' => $this->query($uri->query->toArray()),
         ]);
     }
 
     public function snippet(): string|array
     {
-        return 'facets/link';
+        return [
+            'facets/link--' . Str::slug($this->type()),
+            'facets/link',
+        ];
     }
 
     public function snippetData(): array
@@ -59,31 +59,12 @@ class Link implements Stringable
     public function toArray(): array
     {
         return [
-            'name' => $this->name,
             'label' => $this->label,
-            'value' => $this->value,
         ];
     }
 
     public function __toString(): string
     {
         return $this->toString();
-    }
-
-    protected function withoutValue(array $query): array
-    {
-        if (is_array($query[$this->name] ?? null) === false) {
-            unset($query[$this->name]);
-
-            return $query;
-        }
-
-        $query[$this->name] = array_values(array_diff($query[$this->name], [$this->value]));
-
-        if ($query[$this->name] === []) {
-            unset($query[$this->name]);
-        }
-
-        return $query;
     }
 }
