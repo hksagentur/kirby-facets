@@ -12,12 +12,18 @@ use Stringable;
  */
 class Links extends Collection implements Stringable
 {
-    public function render(array $data = []): string
+    use Concerns\CanBeRendered;
+
+    public function snippet(): string|array
     {
-        return snippet('facets/links', [
-            'items' => $this,
-            ...$data,
-        ], return: true);
+        return 'facets/links';
+    }
+
+    public function snippetData(): array
+    {
+        return [
+            'links' => $this,
+        ];
     }
 
     public function toArray(?Closure $map = null): array
@@ -28,13 +34,6 @@ class Links extends Collection implements Stringable
     public function toString(): string
     {
         return $this->render();
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return $this->render([
-            'attr' => $attributes,
-        ]);
     }
 
     public function __toString(): string

@@ -11,6 +11,8 @@ use Stringable;
  */
 class Facets extends Collection implements Stringable
 {
+    use Concerns\CanBeRendered;
+
     public function featured(): static
     {
         return $this->filter(fn (Facet $facet) => $facet->isFeatured());
@@ -55,24 +57,21 @@ class Facets extends Collection implements Stringable
         return new Links($links);
     }
 
-    public function render(array $data = []): string
+    public function snippet(): string|array
     {
-        return snippet('facets/form', [
+        return 'facets/form';
+    }
+
+    public function snippetData(): array
+    {
+        return [
             'facets' => $this,
-            ...$data,
-        ], return: true);
+        ];
     }
 
     public function toString(): string
     {
         return $this->render();
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return $this->render([
-            'attr' => $attributes,
-        ]);
     }
 
     public function __toString(): string

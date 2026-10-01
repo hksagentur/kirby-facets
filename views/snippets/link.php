@@ -1,13 +1,13 @@
-<?php /** @var \Hks\Facets\Form\Link $item */ ?>
+<?php /** @var \Hks\Facets\Form\Link $link */ ?>
 
 <a <?= attr(A::merge([
     'class' => 'chip',
-    'href' => $item->url(),
+    'href' => $link->url(),
     'aria-label' => tt('hksagentur.facets.filter.remove', [
-        'label' => $item->label(),
+        'label' => $link->label(),
     ]),
 ], $attr ?? [])) ?>>
-    <?= esc($item->label()) ?>
+    <?= esc($link->label()) ?>
 
     <?php snippet('facets/icon', [
         'name' => 'cross',

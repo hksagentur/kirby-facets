@@ -1,11 +1,11 @@
-<?php /** @var \Hks\Facets\Form\Links $items */ ?>
+<?php /** @var \Hks\Facets\Form\Links $links */ ?>
 
 <ul <?= attr($attr ?? [
     'role' => 'list',
 ]) ?>>
-    <?php foreach ($items as $item): ?>
+    <?php foreach ($links as $link): ?>
         <li>
-            <?= $item ?>
+            <?= $link ?>
         </li>
     <?php endforeach ?>
 </ul>

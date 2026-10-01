@@ -7,6 +7,8 @@ use Stringable;
 
 class Link implements Stringable
 {
+    use Concerns\CanBeRendered;
+
     public function __construct(
         protected readonly string $name,
         protected readonly string $label,
@@ -37,24 +39,21 @@ class Link implements Stringable
         ]);
     }
 
-    public function render(array $data = []): string
+    public function snippet(): string|array
     {
-        return snippet('facets/link', [
-            'item' => $this,
-            ...$data,
-        ], return: true);
+        return 'facets/link';
+    }
+
+    public function snippetData(): array
+    {
+        return [
+            'link' => $this,
+        ];
     }
 
     public function toString(): string
     {
         return $this->render();
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return $this->render([
-            'attr' => $attributes,
-        ]);
     }
 
     public function toArray(): array

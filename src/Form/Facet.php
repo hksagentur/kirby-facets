@@ -3,20 +3,20 @@
 namespace Hks\Facets\Form;
 
 use Closure;
-use Hks\Facets\Form\Concerns\CanBeFeatured;
 use Hks\Facets\Form\Facets\Checkboxes;
 use Hks\Facets\Form\Facets\Date;
 use Hks\Facets\Form\Facets\Radio;
 use Hks\Facets\Form\Facets\Select;
 use Hks\Facets\Form\Facets\Toggle;
 use Hks\Facets\Http\InteractsWithInput;
+use Hks\Facets\Toolkit\Str;
 use Kirby\Toolkit\A;
-use Kirby\Toolkit\Str;
 use Stringable;
 
 abstract class Facet implements Stringable
 {
-    use CanBeFeatured;
+    use Concerns\CanBeFeatured;
+    use Concerns\CanBeRendered;
     use InteractsWithInput;
 
     protected ?Closure $format = null;
@@ -62,6 +62,11 @@ abstract class Facet implements Stringable
         return ! $this->isFeatured();
     }
 
+    public function type(): string
+    {
+        return Str::snake(Str::classBasename(static::class));
+    }
+
     public function label(): string
     {
         return $this->label;
@@ -72,19 +77,22 @@ abstract class Facet implements Stringable
         return $this->name;
     }
 
-    public function type(): string
+    public function snippet(): string|array
     {
-        return strtolower(substr(static::class, strrpos(static::class, '\\') + 1));
+        $type = Str::slug($this->type());
+        $name = Str::slug($this->name());
+
+        return [
+            "facets/{$type}--{$name}",
+            "facets/{$type}",
+        ];
     }
 
-    public function snippet(): string
+    public function snippetData(): array
     {
-        return Str::slug($this->type());
-    }
-
-    public function safeName(): string
-    {
-        return Str::slug($this->name());
+        return [
+            'facet' => $this,
+        ];
     }
 
     /** @return array<int, Link> */
@@ -119,27 +127,9 @@ abstract class Facet implements Stringable
         return Str::label($value);
     }
 
-    public function render(array $data = []): string
-    {
-        return snippet([
-            "facets/{$this->snippet()}--{$this->safeName()}",
-            "facets/{$this->snippet()}",
-        ], [
-            'facet' => $this,
-            ...$data,
-        ], return: true);
-    }
-
     public function toString(): string
     {
         return $this->render();
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return $this->render([
-            'attr' => $attributes,
-        ]);
     }
 
     public function __toString(): string
