@@ -30,6 +30,11 @@ trait InteractsWithInput
 
     public function value(mixed $default = null): mixed
     {
+        return $this->input($default);
+    }
+
+    public function input(mixed $default = null): mixed
+    {
         $value = App::instance()->request()->get($this->name(), $default);
 
         if (is_string($value)) {

@@ -10,6 +10,9 @@ use Hks\Facets\Form\Concerns\HasOptions;
 use Hks\Facets\Form\Facet;
 use Hks\Facets\Form\Options;
 
+/**
+ * @phpstan-import-type ResolvableOptions from Options
+ */
 class Radio extends Facet
 {
     use CanBeDisabled;
@@ -17,6 +20,7 @@ class Radio extends Facet
     use CanHideOptionLabels;
     use HasOptions;
 
+    /** @param ResolvableOptions $options */
     public function __construct(
         protected string $label,
         protected string $name,

@@ -207,6 +207,28 @@ echo $facets->links(); // <ul> of removable chips, via the facets/links snippet
 
 `$facets->render()` (what `echo $facets` calls) already includes this, so you only need `$facets->links()` directly if you want the chips somewhere other than inside the form.
 
+### Preselecting a facet's value
+
+`->default()` gives a facet a value to fall back to while its query parameter is missing — e.g. a landing page that is itself one option of the facet and should show it preselected:
+
+```php
+Facet::radio(
+    label: 'House type',
+    name: 'house_type',
+    options: fn () => $page->houseTypes()->toFacetOptions(),
+)->default($houseType->id());
+```
+
+A default only prefills the control: the facet doesn't count as active, so it gets no applied-filter chip, clear link or reset link of its own. `value()` returns the default while the parameter is missing; `input()` always returns the raw request value, ignoring it — the one to check before acting on a real selection:
+
+```php
+if ($facet->isActive()) {
+    // the visitor picked $facet->input(), not just the default
+}
+```
+
+A default never filters anything: it only affects the facet, not a `Filter` with the same name. Narrow the collection itself if the page stands for one of the options.
+
 ### Overriding a facet's value formatting
 
 `->formatUsing()` receives the raw active value and the facet's own best-effort label, so you can tweak it instead of recomputing it from scratch:

@@ -7,12 +7,15 @@ use Kirby\Toolkit\A;
 use Kirby\Toolkit\Collection;
 
 /**
+ * @phpstan-type OptionProps array{value: string, label: string, icon?: string|null}
+ * @phpstan-type ResolvableOptions Options|list<OptionProps>|(Closure(): (Options|list<OptionProps>))
+ *
  * @template T of Option
  * @extends Collection<T>
  */
 class Options extends Collection
 {
-    /** @param array<int, array{value: string, label: string, icon?: string|null}> $options */
+    /** @param list<OptionProps> $options */
     public static function factory(array $options, mixed $checked = null): static
     {
         $checked = A::wrap($checked);

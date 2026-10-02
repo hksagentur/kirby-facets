@@ -16,13 +16,20 @@ use Kirby\Toolkit\A;
 use Kirby\Toolkit\I18n;
 use Stringable;
 
+/**
+ * @phpstan-import-type ResolvableOptions from Options
+ */
 abstract class Facet implements Stringable
 {
     use Concerns\CanBeFeatured;
     use Concerns\CanBeRendered;
     use InteractsWithInput;
 
+    /** @var (Closure(string $value, string $label): string)|null */
     protected ?Closure $format = null;
+
+    /** @var string|list<string>|null */
+    protected string|array|null $default = null;
 
     public function __construct(
         protected string $label,
@@ -30,7 +37,8 @@ abstract class Facet implements Stringable
     ) {
     }
 
-    public static function checkboxes(string $label, string $name, array|Closure $options): Checkboxes
+    /** @param ResolvableOptions $options */
+    public static function checkboxes(string $label, string $name, Options|Closure|array $options): Checkboxes
     {
         return new Checkboxes($label, $name, $options);
     }
@@ -40,12 +48,14 @@ abstract class Facet implements Stringable
         return new Date($label, $name);
     }
 
-    public static function radio(string $label, string $name, array|Closure $options): Radio
+    /** @param ResolvableOptions $options */
+    public static function radio(string $label, string $name, Options|Closure|array $options): Radio
     {
         return new Radio($label, $name, $options);
     }
 
-    public static function select(string $label, string $name, array|Closure $options): Select
+    /** @param ResolvableOptions $options */
+    public static function select(string $label, string $name, Options|Closure|array $options): Select
     {
         return new Select($label, $name, $options);
     }
@@ -57,7 +67,9 @@ abstract class Facet implements Stringable
 
     public function isActive(): bool
     {
-        return $this->isNotEmpty();
+        $value = $this->input();
+
+        return $value !== null && $value !== '';
     }
 
     public function isAdvanced(): bool
@@ -78,6 +90,19 @@ abstract class Facet implements Stringable
     public function name(): string
     {
         return $this->name;
+    }
+
+    public function value(mixed $default = null): mixed
+    {
+        return $this->input($default ?? $this->default);
+    }
+
+    /** @param string|list<string>|null $value */
+    public function default(string|array|null $value): static
+    {
+        $this->default = $value;
+
+        return $this;
     }
 
     public function snippet(): string|array
@@ -107,13 +132,13 @@ abstract class Facet implements Stringable
                 name: $this->name(),
                 value: $value,
             ),
-            A::wrap($this->value())
+            A::wrap($this->input())
         );
     }
 
     public function clearLink(): ?ClearLink
     {
-        if ($this->isEmpty()) {
+        if (! $this->isActive()) {
             return null;
         }
 
@@ -126,6 +151,7 @@ abstract class Facet implements Stringable
         );
     }
 
+    /** @param Closure(string $value, string $label): string $formatter */
     public function formatUsing(Closure $formatter): static
     {
         $this->format = $formatter;
