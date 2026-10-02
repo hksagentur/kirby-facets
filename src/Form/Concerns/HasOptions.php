@@ -8,6 +8,8 @@ use Hks\Facets\Form\Options;
 
 trait HasOptions
 {
+    protected ?Options $resolvedOptions = null;
+
     public function hasOptions(): bool
     {
         return $this->options()->isNotEmpty();
@@ -20,11 +22,7 @@ trait HasOptions
 
     public function options(): Options
     {
-        if ($this->options instanceof Options) {
-            return $this->options;
-        }
-
-        return $this->options = $this->resolveOptions();
+        return $this->resolvedOptions ??= $this->resolveOptions();
     }
 
     public function option(string $value): ?Option
