@@ -140,7 +140,7 @@ Filter::in('season')->from('spielzeit');
 // ->attribute() still returns 'season'; only ->name() becomes 'spielzeit'
 ```
 
-### Rendering with `Facet`/`Facets`
+### Declaring facets
 
 A `Facet` reads its own value from the request by query parameter name, independently of any `Filter` — if a facet should narrow the same collection a `Filter` filters, give both the same name. `Facet` type names match Kirby Panel's own field type names (`checkboxes`, `radio`, `select`, `date`, `toggle`) — `toggle` pairs naturally with `Filter::equals()` for a plain boolean field, no dedicated `Toggle` filter needed:
 
@@ -151,61 +151,35 @@ use Hks\Facets\Form\Facet;
 use Hks\Facets\Form\Facets;
 
 $facets = new Facets([
-    Facet::checkboxes('season', 'Season', fn () => Seasons::options()),
-    Facet::date('date', 'Date'),
-    Facet::toggle('musiktheater', 'Musiktheater'),
+    Facet::checkboxes(label: 'Season', name: 'season', options: fn () => Seasons::options()),
+    Facet::date(label: 'Date', name: 'date'),
+    Facet::toggle(label: 'Musiktheater', name: 'musiktheater'),
 ]);
-
-echo $facets;
 ```
 
-`echo $facets` (or `$facets->render()`/`$facets->toHtml($attributes)`) renders the whole `<form>` — every facet's own markup plus the applied-filter chips and a submit button — via the overridable `facets/form` snippet. Loop over `$facets` yourself instead if you don't want that wrapper:
-
-```php
-<?php foreach ($facets as $facet): ?>
-  <?= $facet ?>
-<?php endforeach ?>
-```
-
-`checkboxes`/`radio` accept the options list as an `array` of `['value' => ..., 'label' => ..., 'icon' => ...]` pairs (`icon` optional), an already-built `Options` instance, or a `Closure` returning either — evaluated lazily and at most once per facet, however many times its snippet reads `options()`. Each pair becomes an `Option` (`value()`, `label()`, `icon()`, `hasIcon()`, `isChecked()`):
-
-```php
-<?php foreach ($facet->options() as $option): ?>
-  <label>
-    <input type="checkbox" name="season[]" value="<?= esc($option->value()) ?>" <?= $option->isChecked() ? 'checked' : '' ?>>
-    <?= esc($option->label()) ?>
-  </label>
-<?php endforeach ?>
-```
+`checkboxes`/`radio` accept the options list as an `array` of `['value' => ..., 'label' => ..., 'icon' => ...]` pairs (`icon` optional), an already-built `Options` instance, or a `Closure` returning either — evaluated lazily and at most once per facet, however many times its snippet reads `options()`. Each pair becomes an `Option` (`value()`, `label()`, `icon()`, `hasIcon()`, `isChecked()`).
 
 Building that pairs list from an existing Kirby collection is common enough to have its own collection method, available on every `Kirby\Cms\Collection`: `toFacetOptions(Closure|string|null $value = null, ?string $label = null, Closure|string|null $icon = null): Options`. Defaults to `id`/`title` (matching `Pages`), `icon` defaults to none; pass a field/method name or a per-item `Closure` for any of the three:
 
 ```php
-Facet::radio('season', 'Season', fn () => $kirby->collection('seasons')->toFacetOptions());
-Facet::radio('category', 'Category', fn () => $categories->toFacetOptions(label: 'name')); // Structure: no title(), has 'id'/'name'
-Facet::radio('house_type', 'House type', fn () => $page->houseTypes()->toFacetOptions(icon: 'icon')); // reads the page's own `icon` field
+Facet::radio(
+    label: 'Season',
+    name: 'season',
+    options: fn () => $kirby->collection('seasons')->toFacetOptions(),
+);
+
+Facet::radio(
+    label: 'Category',
+    name: 'category',
+    options: fn () => $categories->toFacetOptions(label: 'name'), // Structure: no title(), has 'id'/'name'
+);
+
+Facet::radio(
+    label: 'House type',
+    name: 'house_type',
+    options: fn () => $page->houseTypes()->toFacetOptions(icon: 'icon'), // reads the page's own `icon` field
+);
 ```
-
-An `Option::icon()` value is only ever a string your project gave it — the plugin has no opinion on what it means (an SVG sprite symbol, an icon font class, whatever). `checkboxes`/`radio` render it through the overridable `facets/icon` snippet, which ships an inert default (a `<span data-icon="…">`, nothing visually happens) — see [Overriding the default markup](#overriding-the-default-markup) to hook it into your project's actual icon system. Since the plugin doesn't know your icon set, make sure whatever CMS field feeds `icon` only ever holds values that are known to exist (e.g. an options/select field backed by your real icon inventory) rather than free text — otherwise you're relying on your own icon snippet to fail gracefully on typos.
-
-`checkboxes`/`radio` can also hide their options' visible labels via `->hideLabels()` (or `->showLabels()`/`->labels(bool)`), mirroring Kirby's own `toggles` `labels: false` — useful for an icon-driven option group where the label would otherwise be redundant next to the icon:
-
-```php
-Facet::radio('house_type', 'House type', fn () => $page->houseTypes()->toFacetOptions(icon: 'icon'))
-    ->hideLabels();
-```
-
-The bundled snippets keep each option's label in the DOM either way, inside its usual `radio__label`/`checkbox__label` span — hiding it visually is done by adding a `visually-hidden` class to that span whenever `shouldHideLabels()` is `true`, so it stays available to screen readers. `Select` has no equivalent: a native `<option>` can't hide its text and show an icon instead.
-
-`Facets` indexes by `Facet::name()` regardless of how items were added. `active()`/`featured()`/`advanced()` filter down to the facets currently applied, flagged via `->featured()`, or not — the bundled `facets/form` snippet uses these to decide what to show right away versus tucked behind a disclosure; see [Overriding the default markup](#overriding-the-default-markup) to change that behavior.
-
-`Facet::links()` returns every currently active value as a `Link` — its own label plus the URL with just that value removed, the building block for a removable filter chip. `Facets::links()` collects every active facet's `Link`s into a `Links` list and — like `Facet`/`Facets` — knows how to render itself via an overridable snippet:
-
-```php
-echo $facets->links(); // <ul> of removable chips, via the facets/links snippet
-```
-
-`$facets->render()` (what `echo $facets` calls) already includes this, so you only need `$facets->links()` directly if you want the chips somewhere other than inside the form.
 
 ### Preselecting a facet's value
 
@@ -229,12 +203,57 @@ if ($facet->isActive()) {
 
 A default never filters anything: it only affects the facet, not a `Filter` with the same name. Narrow the collection itself if the page stands for one of the options.
 
+### Rendering with `Facet`/`Facets`
+
+`echo $facets` (or `$facets->render()`/`$facets->toHtml($attributes)`) renders the whole `<form>` — every facet's own markup plus the applied-filter chips and a submit button — via the overridable `facets/form` snippet. Loop over `$facets` yourself instead if you don't want that wrapper:
+
+```php
+<?php foreach ($facets as $facet): ?>
+  <?= $facet ?>
+<?php endforeach ?>
+```
+
+Inside a facet's snippet, `$facet->options()` yields its `Option`s:
+
+```php
+<?php foreach ($facet->options() as $option): ?>
+  <label>
+    <input type="checkbox" name="season[]" value="<?= esc($option->value()) ?>" <?= $option->isChecked() ? 'checked' : '' ?>>
+    <?= esc($option->label()) ?>
+  </label>
+<?php endforeach ?>
+```
+
+An `Option::icon()` value is only ever a string your project gave it — the plugin has no opinion on what it means (an SVG sprite symbol, an icon font class, whatever). `checkboxes`/`radio` render it through the overridable `facets/icon` snippet, which ships an inert default (a `<span data-icon="…">`, nothing visually happens) — see [Overriding the default markup](#overriding-the-default-markup) to hook it into your project's actual icon system. Since the plugin doesn't know your icon set, make sure whatever CMS field feeds `icon` only ever holds values that are known to exist (e.g. an options/select field backed by your real icon inventory) rather than free text — otherwise you're relying on your own icon snippet to fail gracefully on typos.
+
+`checkboxes`/`radio` can also hide their options' visible labels via `->hideLabels()` (or `->showLabels()`/`->labels(bool)`), mirroring Kirby's own `toggles` `labels: false` — useful for an icon-driven option group where the label would otherwise be redundant next to the icon:
+
+```php
+Facet::radio(
+    label: 'House type',
+    name: 'house_type',
+    options: fn () => $page->houseTypes()->toFacetOptions(icon: 'icon'),
+)->hideLabels();
+```
+
+The bundled snippets keep each option's label in the DOM either way, inside its usual `radio__label`/`checkbox__label` span — hiding it visually is done by adding a `visually-hidden` class to that span whenever `shouldHideLabels()` is `true`, so it stays available to screen readers. `Select` has no equivalent: a native `<option>` can't hide its text and show an icon instead.
+
+`Facets` indexes by `Facet::name()` regardless of how items were added. `active()`/`featured()`/`advanced()` filter down to the facets currently applied, flagged via `->featured()`, or not — the bundled `facets/form` snippet uses these to decide what to show right away versus tucked behind a disclosure; see [Overriding the default markup](#overriding-the-default-markup) to change that behavior.
+
+`Facet::links()` returns every currently active value as a `Link` — its own label plus the URL with just that value removed, the building block for a removable filter chip. `Facets::links()` collects every active facet's `Link`s into a `Links` list and — like `Facet`/`Facets` — knows how to render itself via an overridable snippet:
+
+```php
+echo $facets->links(); // <ul> of removable chips, via the facets/links snippet
+```
+
+`$facets->render()` (what `echo $facets` calls) already includes this, so you only need `$facets->links()` directly if you want the chips somewhere other than inside the form.
+
 ### Overriding a facet's value formatting
 
 `->formatUsing()` receives the raw active value and the facet's own best-effort label, so you can tweak it instead of recomputing it from scratch:
 
 ```php
-Facet::checkboxes('season', 'Season', fn () => Options::seasons())
+Facet::checkboxes(label: 'Season', name: 'season', options: fn () => Options::seasons())
     ->formatUsing(fn (string $value, string $label) => "Season {$label}");
 ```
 
