@@ -14,6 +14,11 @@ class Links extends Collection implements Stringable
 {
     use Concerns\CanBeRendered;
 
+    public function hasMultiple(): bool
+    {
+        return $this->count() > 1;
+    }
+
     public function snippet(): string|array
     {
         return 'facets/links';

@@ -8,6 +8,7 @@ return [
     'facets/date' => dirname(__DIR__) . '/views/snippets/date.php',
     'facets/toggle' => dirname(__DIR__) . '/views/snippets/toggle.php',
     'facets/form' => dirname(__DIR__) . '/views/snippets/form.php',
+    'facets/applied-filters' => dirname(__DIR__) . '/views/snippets/applied-filters.php',
     'facets/links' => dirname(__DIR__) . '/views/snippets/links.php',
     'facets/link' => dirname(__DIR__) . '/views/snippets/link.php',
     'facets/link--reset' => dirname(__DIR__) . '/views/snippets/link--reset.php',

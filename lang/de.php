@@ -11,4 +11,6 @@ return [
     'hksagentur.facets.links.title' => 'Aktive Filter',
     'hksagentur.facets.links.reset' => 'Zurücksetzen',
     'hksagentur.facets.links.clear' => '{{ label }} zurücksetzen',
+    'hksagentur.facets.applied.count' => ['Keine Treffer', '{{ count }} Treffer', '{{ count }} Treffer'],
+    'hksagentur.facets.applied.reset' => 'Alle entfernen',
 ];

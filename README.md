@@ -212,7 +212,7 @@ A default never filters anything: it only affects the facet, not a `Filter` with
 
 ### Rendering with `Facet`/`Facets`
 
-`echo $facets` (or `$facets->render()`/`$facets->toHtml($attributes)`) renders the whole `<form>` — every facet's own markup plus the applied-filter chips and a submit button — via the overridable `facets/form` snippet. Loop over `$facets` yourself instead if you don't want that wrapper:
+`echo $facets` (or `$facets->render()`/`$facets->toHtml($attributes)`) renders the whole `<form>` — every facet's own markup plus a submit button — via the overridable `facets/form` snippet. Loop over `$facets` yourself instead if you don't want that wrapper:
 
 ```php
 <?php foreach ($facets as $facet): ?>
@@ -253,7 +253,18 @@ The bundled snippets keep each option's label in the DOM either way, inside its 
 echo $facets->links(); // <ul> of removable chips, via the facets/links snippet
 ```
 
-`$facets->render()` (what `echo $facets` calls) already includes this, so you only need `$facets->links()` directly if you want the chips somewhere other than inside the form.
+### Showing the applied filters
+
+The bundled `facets/applied-filters` snippet wraps those links into the section that usually sits above the results: the chips, a link removing all of them at once, and — if you pass it in — the number of matching items. It renders nothing while no facet is active, so it can be included unconditionally:
+
+```php
+<?php snippet('facets/applied-filters', [
+    'facets' => $facets,
+    'total' => $items->pagination()?->total(),
+]) ?>
+```
+
+The total is optional and never derived: facets don't know the collection they filter, so hand it over from wherever you applied your `Filters`. Without it, the section only lists the chips. The chips go through `Links` (and thus `facets/links`/`facets/link`), the count is an `<output>` tied to the form and only shown for a total above zero, and the reset link — `$facets->resetLink()` with its own label — only appears when `$links->hasMultiple()`. It isn't part of `$facets->render()`: place it wherever the results are.
 
 ### Overriding a facet's value formatting
 
@@ -311,6 +322,7 @@ site/snippets/facets/select.php
 site/snippets/facets/date.php
 site/snippets/facets/toggle.php
 site/snippets/facets/form.php
+site/snippets/facets/applied-filters.php
 site/snippets/facets/links.php
 site/snippets/facets/icon.php
 ```

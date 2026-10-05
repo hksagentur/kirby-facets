@@ -74,14 +74,14 @@ class Facets extends Collection implements Stringable
         return new Links($links);
     }
 
-    public function resetLink(): ?ResetLink
+    public function resetLink(?string $label = null): ?ResetLink
     {
         if (! $this->hasActive()) {
             return null;
         }
 
         return new ResetLink(
-            label: I18n::translate('hksagentur.facets.links.reset'),
+            label: $label ?? I18n::translate('hksagentur.facets.links.reset'),
             names: $this->keys(),
         );
     }

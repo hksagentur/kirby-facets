@@ -83,19 +83,3 @@
         </dialog>
     <?php endif ?>
 </form>
-
-<?php if ($facets->links()->isNotEmpty()): ?>
-    <section <?= attr([
-        'id' => 'active-filters',
-        'aria-labelledby' => 'active-filters-title',
-    ]) ?>>
-        <h2 <?= attr([
-            'id' => 'active-filters-title',
-            'class' => 'visually-hidden',
-        ]) ?>>
-            <?= t('hksagentur.facets.links.title') ?>
-        </h2>
-
-        <?= $facets->links() ?>
-    </section>
-<?php endif ?>
