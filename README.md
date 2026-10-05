@@ -201,6 +201,13 @@ if ($facet->isActive()) {
 }
 ```
 
+`isEmpty()` follows `isActive()`, so a facet holding only its default counts as empty. The conversion helpers don't: `split()`, `toPage()`, `toPages()`, `toInt()`, `toFloat()`, `toBool()`, `toTimestamp()` and `toDate()` all read `value()` and resolve the default like a real selection. Go through `$facets->active()` when only a submitted value should count:
+
+```php
+$facet->toPage();                                // the visitor's pick, or the default
+$facets->active()->get('house_type')?->toPage(); // the visitor's pick only
+```
+
 A default never filters anything: it only affects the facet, not a `Filter` with the same name. Narrow the collection itself if the page stands for one of the options.
 
 ### Rendering with `Facet`/`Facets`

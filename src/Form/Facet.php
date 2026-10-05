@@ -72,6 +72,11 @@ abstract class Facet implements Stringable
         return $value !== null && $value !== '';
     }
 
+    public function isEmpty(): bool
+    {
+        return ! $this->isActive();
+    }
+
     public function isAdvanced(): bool
     {
         return ! $this->isFeatured();

@@ -96,13 +96,9 @@ trait InteractsWithInput
 
     public function toTimestamp(?int $default = null): ?int
     {
-        if ($this->isEmpty()) {
-            return $default;
-        }
-
         $value = $this->value();
 
-        if (! is_string($value)) {
+        if (! is_string($value) || $value === '') {
             return $default;
         }
 
