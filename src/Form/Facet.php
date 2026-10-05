@@ -141,18 +141,15 @@ abstract class Facet implements Stringable
         );
     }
 
-    public function clearLink(): ?ClearLink
+    public function clearLink(?string $label = null): ?ClearLink
     {
         if (! $this->isActive()) {
             return null;
         }
 
-        $label = $this->label();
-        $name = $this->name();
-
         return new ClearLink(
-            label: I18n::template('hksagentur.facets.links.clear', replace: ['label' => $label]),
-            name: $name,
+            label: $label ?? I18n::template('hksagentur.facets.links.clear', replace: ['label' => $this->label()]),
+            name: $this->name(),
         );
     }
 
