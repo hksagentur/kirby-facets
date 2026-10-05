@@ -255,7 +255,7 @@ echo $facets->links(); // <ul> of removable chips, via the facets/links snippet
 
 ### Showing the applied filters
 
-The bundled `facets/applied-filters` snippet wraps those links into the section that usually sits above the results: the chips, a link removing all of them at once, and — if you pass it in — the number of matching items. It renders nothing while no facet is active, so it can be included unconditionally:
+The bundled `facets/applied-filters` snippet wraps those links into the section that usually sits above the results: the chips, a link removing all of them at once, and the number of matching items. It renders nothing while no facet is active, so it can be included unconditionally:
 
 ```php
 <?php snippet('facets/applied-filters', [
@@ -264,7 +264,7 @@ The bundled `facets/applied-filters` snippet wraps those links into the section 
 ]) ?>
 ```
 
-The total is optional and never derived: facets don't know the collection they filter, so hand it over from wherever you applied your `Filters`. Without it, the section only lists the chips. The chips go through `Links` (and thus `facets/links`/`facets/link`), the count is an `<output>` tied to the form and only shown for a total above zero, and the reset link — `$facets->resetLink()` with its own label — only appears when `$links->hasMultiple()`. It isn't part of `$facets->render()`: place it wherever the results are.
+The total is never derived: facets don't know the collection they filter, so hand it over from wherever you applied your `Filters`. The snippet isn't part of `$facets->render()`: place it wherever the results are.
 
 ### Overriding a facet's value formatting
 
