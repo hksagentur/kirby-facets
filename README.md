@@ -68,6 +68,8 @@ Filters::for($concerts)
     ->add(Filter::belongsTo(name: 'series', collection: 'concert-series'));
 ```
 
+The request values resolve like `toPages()` with the collection as scope, so IDs, UUIDs and slugs all work. A `Field` attribute (e.g. a `pages` field) is compared by its stored values against the resolved pages' IDs and UUIDs — nothing on the filtered side gets resolved. An attribute returning a `Page` or a `Pages` collection is compared directly.
+
 If the request values are already directly comparable and there's nothing to resolve, `Filter::hasAny()` does the same attribute-side check without the collection lookup.
 
 For anything none of the above covers, `Filter::callback()` is the escape hatch — it receives the collection and the filter's own resolved request value, and returns the (usually filtered) collection itself:

@@ -4,6 +4,7 @@ namespace Hks\Facets\Http\Filters;
 
 use Kirby\Cms\App;
 use Kirby\Cms\Collection;
+use Kirby\Cms\Page;
 use Kirby\Cms\Pages;
 use Kirby\Content\Field;
 use Kirby\Toolkit\A;
@@ -11,6 +12,9 @@ use Kirby\Toolkit\A;
 class BelongsTo extends Attribute
 {
     protected ?Pages $pages = null;
+
+    /** @var array<int, string>|null */
+    protected ?array $references = null;
 
     public function __construct(
         string $name,
@@ -32,9 +36,9 @@ class BelongsTo extends Attribute
 
     public function pages(): Pages
     {
-        return $this->pages ??= App::instance()
-            ->collection($this->collection)
-            ->find($this->value());
+        return $this->pages ??= $this->toPages(
+            App::instance()->collection($this->collection)
+        );
     }
 
     public function apply(Collection $collection): Collection
@@ -42,15 +46,32 @@ class BelongsTo extends Attribute
         return $collection->filter(function ($item) use ($collection) {
             $value = $collection->getAttribute($item, $this->attribute());
 
-            if ($value instanceof Field) {
-                $value = $value->toPages();
-            }
-
-            if ($value instanceof Collection) {
-                return $value->intersects($this->pages());
-            }
-
-            return false;
+            return match (true) {
+                $value instanceof Field => array_intersect($value->yaml(), $this->references()) !== [],
+                $value instanceof Page => $this->pages()->has($value),
+                $value instanceof Collection => $value->intersects($this->pages()),
+                default => false,
+            };
         });
+    }
+
+    /** @return array<int, string> */
+    protected function references(): array
+    {
+        if ($this->references !== null) {
+            return $this->references;
+        }
+
+        $this->references = [];
+
+        foreach ($this->pages() as $page) {
+            $this->references[] = $page->id();
+
+            if ($uuid = $page->uuid()) {
+                $this->references[] = $uuid->toString();
+            }
+        }
+
+        return $this->references;
     }
 }
