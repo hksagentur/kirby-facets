@@ -14,7 +14,7 @@ class BelongsTo extends Attribute
 
     public function __construct(
         string $name,
-        protected readonly string $relation,
+        protected readonly string $collection,
         ?string $attribute = null,
     ) {
         parent::__construct($name, $attribute);
@@ -33,7 +33,7 @@ class BelongsTo extends Attribute
     public function pages(): Pages
     {
         return $this->pages ??= App::instance()
-            ->collection($this->relation)
+            ->collection($this->collection)
             ->find($this->value());
     }
 

@@ -52,9 +52,9 @@ abstract class Filter
         return new AtMost($name, $attribute);
     }
 
-    public static function belongsTo(string $name, string $relation, ?string $attribute = null): BelongsTo
+    public static function belongsTo(string $name, string $collection, ?string $attribute = null): BelongsTo
     {
-        return new BelongsTo($name, $relation, $attribute);
+        return new BelongsTo($name, $collection, $attribute);
     }
 
     public static function before(string $name, ?string $attribute = null): Before

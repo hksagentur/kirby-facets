@@ -65,7 +65,7 @@ For relational filters, `Filter::belongsTo()` resolves the request values agains
 ```php
 Filters::for($concerts)
     ->add(Filter::in('season'))
-    ->add(Filter::belongsTo(name: 'series', relation: 'concert-series'));
+    ->add(Filter::belongsTo(name: 'series', collection: 'concert-series'));
 ```
 
 If the request values are already directly comparable and there's nothing to resolve, `Filter::hasAny()` does the same attribute-side check without the collection lookup.
@@ -91,7 +91,7 @@ Prefer a plain array and this plugin's own `pipe()` collection method instead, i
 ```php
 <?= $page->children()->listed()->pipe([
     Filter::in('season'),
-    Filter::belongsTo(name: 'series', relation: 'concert-series'),
+    Filter::belongsTo(name: 'series', collection: 'concert-series'),
 ]) ?>
 ```
 
@@ -111,7 +111,7 @@ class ConcertPage extends Page implements Filterable
     {
         return [
             Filter::in('season'),
-            Filter::belongsTo(name: 'series', relation: 'concert-series'),
+            Filter::belongsTo(name: 'series', collection: 'concert-series'),
         ];
     }
 }
@@ -333,7 +333,7 @@ class GreaterThan extends Attribute
 }
 ```
 
-A filter that needs extra constructor arguments (like `BelongsTo`'s `$relation`, or `Search`'s `$fields`) still declares its own constructor, calling `parent::__construct($name, $attribute)`. A filter with no single-attribute concept at all — `Search` (searches several fields), `Callback` (a closure decides everything) — extends the plain `Filter` base instead and has no `attribute()`.
+A filter that needs extra constructor arguments (like `BelongsTo`'s `$collection`, or `Search`'s `$fields`) still declares its own constructor, calling `parent::__construct($name, $attribute)`. A filter with no single-attribute concept at all — `Search` (searches several fields), `Callback` (a closure decides everything) — extends the plain `Filter` base instead and has no `attribute()`.
 
 `value()` trims string values, so `'   '` counts as unset. Override `isEmpty()` if "empty" means something else for your filter — `In`/`HasAny`/`BelongsTo` treat an empty array as unset, since a request can submit `name[]` with nothing selected. For a filter that doesn't fit the "check emptiness, then apply" shape at all, override `__invoke()` directly instead.
 
