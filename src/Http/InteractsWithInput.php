@@ -145,7 +145,9 @@ trait InteractsWithInput
         $key = preg_replace('!^(@|page://)!', '', $key);
 
         if ($scope) {
-            return $scope->get($key) ?? $scope->findByUuid('page://' . $key);
+            return $scope->get($key)
+                ?? $scope->findByUuid('page://' . $key)
+                ?? $scope->findBy('slug', $key);
         }
 
         if ($page = App::instance()->site()->find($key)) {

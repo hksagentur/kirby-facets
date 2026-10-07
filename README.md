@@ -208,6 +208,12 @@ $facet->toPage();                                // the visitor's pick, or the d
 $facets->active()->get('house_type')?->toPage(); // the visitor's pick only
 ```
 
+`toPage()` and `toPages()` resolve each value as a page ID or UUID. Pass a scope collection and a bare slug resolves too, since slugs are only unique among siblings — handy when the facet's options use `toFacetOptions(value: 'slug')` for shorter URLs:
+
+```php
+$facets->active()->get('house_type')?->toPage($page->children()->listed());
+```
+
 A default never filters anything: it only affects the facet, not a `Filter` with the same name. Narrow the collection itself if the page stands for one of the options.
 
 ### Rendering with `Facet`/`Facets`
