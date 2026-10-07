@@ -146,8 +146,8 @@ trait InteractsWithInput
 
         if ($scope) {
             return $scope->get($key)
-                ?? $scope->findByUuid('page://' . $key)
-                ?? $scope->findBy('slug', $key);
+                ?? $scope->findBy('slug', $key)
+                ?? $scope->findBy('uuid', 'page://' . $key);
         }
 
         if ($page = App::instance()->site()->find($key)) {
