@@ -281,6 +281,26 @@ Facet::checkboxes(label: 'Season', name: 'season', options: fn () => Options::se
     ->formatUsing(fn (string $value, string $label) => "Season {$label}");
 ```
 
+`formatUsing()` takes any callable. For the common cases, `Format` builds one without a closure — the prefix and suffix are joined with a space, a template gets `{{ value }}` and `{{ label }}`:
+
+```php
+use Hks\Facets\Form\Format;
+
+Facet::select(label: 'Energy class', name: 'energy_class', options: fn () => Options::energyClasses())
+    ->formatUsing(Format::prefix('Energy class')); // "Energy class A+"
+
+Facet::select(label: 'Floor size', name: 'floor_size', options: fn () => Options::floorSizes())
+    ->formatUsing(Format::suffix('m²')); // "120 m²"
+
+Facet::select(label: 'Floor size', name: 'floor_size', options: fn () => Options::floorSizes())
+    ->formatUsing(new Format(prefix: 'from', suffix: 'm²')); // "from 120 m²"
+
+Facet::select(label: 'Rooms', name: 'rooms', options: fn () => Options::rooms())
+    ->formatUsing(Format::template('{{ label }}+ rooms')); // "3+ rooms"
+```
+
+Cast to a string, a `Format` shows the template it fills — handy for debugging or for handing the rule on: `(string) Format::prefix('Energy class')` is `'Energy class {{ label }}'`.
+
 ### Writing your own filter
 
 Every bundled filter except `Callback` fits a "check whether the request value is set, then apply it" shape:

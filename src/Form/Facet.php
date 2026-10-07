@@ -153,10 +153,10 @@ abstract class Facet implements Stringable
         );
     }
 
-    /** @param Closure(string $value, string $label): string $formatter */
-    public function formatUsing(Closure $formatter): static
+    /** @param callable(string $value, string $label): string $formatter */
+    public function formatUsing(callable $formatter): static
     {
-        $this->format = $formatter;
+        $this->format = Closure::fromCallable($formatter);
 
         return $this;
     }
